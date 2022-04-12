@@ -101,4 +101,13 @@ public class UserDao {
 
     }
 
+    public int checkId(String id){
+        String checkIdQuery = "select exists(select id from User where id = ?)";
+        String checkIdParams = id;
+        return this.jdbcTemplate.queryForObject(checkIdQuery,
+                int.class,
+                checkIdParams);
+
+    }
+
 }

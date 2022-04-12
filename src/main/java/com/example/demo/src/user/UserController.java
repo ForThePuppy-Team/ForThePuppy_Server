@@ -145,5 +145,20 @@ public class UserController {
         }
     }
 
+    /**
+     * 중복아이디 확인 API
+     * [POST] /users/checkId
+     * @return BaseResponse<String>
+     */
+    @ResponseBody
+    @PostMapping("/checkId")
+    public BaseResponse<String> checkId(@RequestBody String id){
+        try{
+            String result = userProvider.checkId(id);
+            return new BaseResponse<>(result);
+        } catch (BaseException exception){
+            return new BaseResponse<>(exception.getStatus());
+        }
+    }
 
 }

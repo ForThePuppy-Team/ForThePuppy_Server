@@ -89,4 +89,19 @@ public class UserProvider {
 
     }
 
+    public String checkId(String id) throws BaseException{
+        try{
+            int result = userDao.checkId(id);
+            String message = "사용 가능한 아이디";
+            if(result == 1) {
+                message = "중복된 아이디입니다.";
+                return message;
+            }
+            else
+                return message;
+        } catch (Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 }
