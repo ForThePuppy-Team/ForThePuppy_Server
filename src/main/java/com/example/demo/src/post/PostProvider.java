@@ -28,4 +28,14 @@ public class PostProvider {
         this.postDao = postDao;
         this.jwtService = jwtService;
     }
+
+    public List<GetPost> getPosts(int postIdx) throws BaseException{
+        //  try{
+        List<GetPost> getPostsRes = postDao.getPost(postIdx);
+        return getPostsRes;
+        //      }
+        //      catch (Exception exception) {
+        //         throw new BaseException(DATABASE_ERROR);
+        //     }
+    }
 }

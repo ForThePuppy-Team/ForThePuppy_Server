@@ -57,4 +57,28 @@ public class PostController {
         }
     }
 
+    /**
+     * 게시글 조회 API
+     * [GET] /posts/:idx/:userIdx
+     * @return BaseResponse<List<GetPost>>
+     */
+    @ResponseBody
+    @GetMapping("/{idx}/{userIdx}")
+    public BaseResponse<List<GetPost>> getPosts(@PathVariable("idx") int postIdx, @PathVariable("userIdx") int userIdx) {
+        try{
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            // Get Posts
+            List<GetPost> getPostsRes = postProvider.getPosts(postIdx);
+            return new BaseResponse<>(getPostsRes);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+
 }
