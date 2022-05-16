@@ -1,5 +1,6 @@
 package com.example.demo.src.post;
 
+import com.example.demo.src.user.model.PatchUserReq;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.example.demo.config.BaseException;
@@ -80,5 +81,27 @@ public class PostController {
         }
     }
 
+    /**
+     * 게시글 삭제 API
+     * [PATCH] /posts/:idx/:userIdx/status
+     * @return BaseResponse<String>
+     */
+    @ResponseBody
+    @PatchMapping("/{idx}/{userIdx}/status")
+    public BaseResponse<String> deletePost(@PathVariable("idx") int postIdx, @PathVariable("userIdx") int userIdx){
+        try {
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            postService.deletePost(postIdx, userIdx);
+            String result = "";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 
 }

@@ -39,4 +39,16 @@ public class PostService {
         }
     }
 
+    //PATCH
+    public void deletePost(int postIdx, int userIdx) throws BaseException {
+        try{
+            int result = postDao.deletePost(postIdx, userIdx);
+            if(result == 0){
+                throw new BaseException(MODIFY_FAIL_USERNAME);
+            }
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 }

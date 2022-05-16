@@ -97,4 +97,11 @@ public class PostDao {
                 ), getPostParams);
     }
 
+    public int deletePost(int postIdx, int userIdx){
+        String deletePost = "update Post set status = 0 where postIdx = ? and userIdx = ?;";
+        Object[] deletePostParams = new Object[]{postIdx, userIdx};
+
+        return this.jdbcTemplate.update(deletePost,deletePostParams);
+    }
+
 }
