@@ -104,4 +104,47 @@ public class PostDao {
         return this.jdbcTemplate.update(deletePost,deletePostParams);
     }
 
+    public List<GetPostAll> getPostAll(String region){
+        String getPostAllQuery = "select u.userIdx userIdx,\n" +
+                "       p.postIdx postIdx,\n" +
+                "       u.profile profile,\n" +
+                "       u.name name,\n" +
+                "       u.region region,\n" +
+                "       case\n" +
+                "           when (timestampdiff(minute, pc.createAt, now()) < 1) then concat(timestampdiff(second, pc.createAt, now()), '초', ' 전')\n" +
+                "           when (timestampdiff(hour, pc.createAt, now()) < 1) then concat(timestampdiff(minute, pc.createAt, now()),'분', ' 전')\n" +
+                "           when (timestampdiff(day, pc.createAt, now()) < 1) then concat(timestampdiff(hour, pc.createAt, now()), '시간', ' 전')\n" +
+                "           when (timestampdiff(hour, pc.createAt, now()) > 24) then concat(timestampdiff(day, pc.createAt, now()), '일', ' 전')\n" +
+                "           else concat(timestampdiff(month , pc.createAt, now()),'달', ' 전') end as uploadTime,\n" +
+                "       p.title title,\n" +
+                "       p.content content,\n" +
+                "       pc.categoryName categoryName,\n" +
+                "       commentCount,\n" +
+                "       date_format(p.createAt, '%Y-%m-%d') date\n" +
+                "from User u, Post p left join (\n" +
+                "       select postIdx, commentIdx, count(commentIdx) as 'commentCount'\n" +
+                "       from PostComment\n" +
+                "    ) as x on p.postIdx = x.postIdx, PostCategory pc\n" +
+                "where u.userIdx = p.postIdx\n" +
+                "and p.category = pc.categoryIdx\n" +
+                "and u.status = 1\n" +
+                "and p.status = 1\n" +
+                "and pc.status = 1\n" +
+                "and region = ?";
+        String getPostAllParams = region;
+        return this.jdbcTemplate.query(getPostAllQuery,
+                (rs, rowNum) -> new GetPostAll(
+                        rs.getInt("userIdx"),
+                        rs.getInt("postIdx"),
+                        rs.getString("profile"),
+                        rs.getString("name"),
+                        rs.getString("region"),
+                        rs.getString("uploadTime"),
+                        rs.getString("title"),
+                        rs.getString("content"),
+                        rs.getString("CategoryName"),
+                        rs.getInt("commentCount"),
+                        rs.getString("date")
+                        ), getPostAllParams);
+    }
 }

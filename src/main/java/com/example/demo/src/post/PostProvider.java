@@ -38,4 +38,14 @@ public class PostProvider {
         //         throw new BaseException(DATABASE_ERROR);
         //     }
     }
+
+    public List<GetPostAll> getPostAll(String region) throws BaseException{
+          try{
+        List<GetPostAll> getPostAllRes = postDao.getPostAll(region);
+        return getPostAllRes;
+              }
+              catch (Exception exception) {
+                 throw new BaseException(DATABASE_ERROR);
+             }
+    }
 }
