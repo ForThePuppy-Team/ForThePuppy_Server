@@ -46,4 +46,11 @@ public class PuppyDao {
                         rs.getString("character")
                 ), getPuppyParams);
     }
+
+    public int deletePuppy(int puppyIdx, int userIdx){
+        String deletePuppy = "update Puppy set status = 0 where puppyIdx = ? and userIdx = ?";
+        Object[] deletePuppyParams = new Object[]{puppyIdx, userIdx};
+
+        return this.jdbcTemplate.update(deletePuppy,deletePuppyParams);
+    }
 }

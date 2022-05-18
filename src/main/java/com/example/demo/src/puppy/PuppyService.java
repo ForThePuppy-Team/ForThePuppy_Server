@@ -37,4 +37,16 @@ public class PuppyService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    //PATCH
+    public void deletePuppy(int puppyIdx, int userIdx) throws BaseException {
+        try{
+            int result = puppyDao.deletePuppy(puppyIdx, userIdx);
+            if(result == 0){
+                throw new BaseException(MODIFY_FAIL_USERNAME);
+            }
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }
