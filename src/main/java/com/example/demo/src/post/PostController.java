@@ -127,4 +127,27 @@ public class PostController {
         }
     }
 
+    /**
+     * 게시글 수정 API
+     * [PATCH] /posts/:idx/:userIdx
+     * @return BaseResponse<String>
+     */
+    @ResponseBody
+    @PatchMapping("/{idx}/{userIdx}")
+    public BaseResponse<String> modifyPost(@PathVariable("idx") int postIdx, @PathVariable("userIdx") int userIdx, @RequestBody PatchPostReq patchPostReq){
+        try {
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            postService.modifyPost(postIdx, userIdx, patchPostReq);
+            String result = "";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
 }

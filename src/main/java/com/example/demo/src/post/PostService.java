@@ -51,4 +51,16 @@ public class PostService {
         }
     }
 
+    //PATCH
+    public void modifyPost(int postIdx, int userIdx, PatchPostReq patchPostReq) throws BaseException {
+        try{
+            int result = postDao.modifyPost(postIdx, userIdx, patchPostReq);
+            if(result == 0){
+                throw new BaseException(MODIFY_FAIL_USERNAME);
+            }
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 }

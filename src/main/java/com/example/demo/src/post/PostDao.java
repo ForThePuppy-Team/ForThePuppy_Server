@@ -147,4 +147,11 @@ public class PostDao {
                         rs.getString("date")
                         ), getPostAllParams);
     }
+
+    public int modifyPost(int postIdx, int userIdx, PatchPostReq patchPostReq){
+        String modifyPostQuery = "update Post set title = ? , content = ? where postIdx = ? and userIdx = ? ";
+        Object[] modifyPostParams = new Object[]{patchPostReq.getTitle(), patchPostReq.getContent(), postIdx, userIdx};
+
+        return this.jdbcTemplate.update(modifyPostQuery,modifyPostParams);
+    }
 }
