@@ -1,6 +1,7 @@
 package com.example.demo.src.puppy;
 
 import com.example.demo.config.BaseException;
+import com.example.demo.src.post.model.PostPostReq;
 import com.example.demo.src.puppy.model.*;
 import com.example.demo.utils.JwtService;
 import com.example.demo.utils.SHA256;
@@ -25,5 +26,15 @@ public class PuppyService {
         this.puppyDao = puppyDao;
         this.puppyProvider = puppyProvider;
         this.jwtService = jwtService;
+    }
+
+    //POST
+    public int createPuppy(PostPuppyReq postPuppyReq) throws BaseException {
+        try{
+            int puppyIdx = puppyDao.createPuppy(postPuppyReq);
+            return puppyIdx;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
     }
 }

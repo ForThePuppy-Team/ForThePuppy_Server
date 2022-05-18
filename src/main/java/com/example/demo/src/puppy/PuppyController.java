@@ -31,4 +31,28 @@ public class PuppyController {
         this.puppyService = puppyService;
         this.jwtService = jwtService;
     }
+
+    /**
+     * 반려견 등록 API
+     * [POST] /puppies
+     * @return BaseResponse<Integer>
+     */
+    // Body
+    @ResponseBody
+    @PostMapping("")
+    public BaseResponse<Integer> createPuppy(@RequestBody PostPuppyReq postPuppyReq) {
+        try{
+            int userIdx = postPuppyReq.getUserIdx();
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            int puppyIdx = puppyService.createPuppy(postPuppyReq);
+            return new BaseResponse<>(puppyIdx);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }

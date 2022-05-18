@@ -16,4 +16,14 @@ public class PuppyDao {
     public void setDataSource(DataSource dataSource){
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
+
+    public int createPuppy(PostPuppyReq postPuppyReq){
+        String createPuppyQuery = "insert into Puppy (puppyName, puppyPhoto, puppyGender, breed, birth, neutering, Vaccination, `character`, userIdx) values (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        Object[] createPuppyParams = new Object[]{postPuppyReq.getPuppyName(), postPuppyReq.getPuppyPhoto(), postPuppyReq.getPuppyGender(), postPuppyReq.getBreed(), postPuppyReq.getBirth(),
+                postPuppyReq.getNeutering(), postPuppyReq.getVaccination(), postPuppyReq.getCharacter(), postPuppyReq.getUserIdx()};
+        this.jdbcTemplate.update(createPuppyQuery, createPuppyParams);
+
+        String lastInsertIdQuery = "select last_insert_id()";
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
+    }
 }
