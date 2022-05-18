@@ -28,4 +28,14 @@ public class PuppyProvider {
         this.puppyDao = puppyDao;
         this.jwtService = jwtService;
     }
+
+    public List<GetPuppy> getPuppies(int userIdx) throws BaseException{
+        try{
+            List<GetPuppy> getPuppies = puppyDao.getPuppy(userIdx);
+            return getPuppies;
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }
