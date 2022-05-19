@@ -38,4 +38,14 @@ public class ChatService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    //POST
+    public int createChatMessage(int roomIdx, PostChatMessage postChatMessage) throws BaseException {
+        try{
+            int messageIdx = chatDao.createChatMessage(roomIdx, postChatMessage);
+            return messageIdx;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

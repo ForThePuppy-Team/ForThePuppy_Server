@@ -59,4 +59,28 @@ public class ChatController {
         }
     }
 
+    /**
+     * 채팅 메세지 생성 API
+     * [POST] /chats/:roomIdx/message
+     * @return BaseResponse<Integer>
+     */
+    // Body
+    @ResponseBody
+    @PostMapping("/{roomIdx}/message")
+    public BaseResponse<Integer> createChatMessage(@PathVariable("roomIdx") int roomIdx, @RequestBody PostChatMessage postChatMessage) {
+        try{
+            int userIdx = postChatMessage.getSenderIdx();
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            int messageIdx = chatService.createChatMessage(roomIdx, postChatMessage);
+            return new BaseResponse<>(messageIdx);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
 }

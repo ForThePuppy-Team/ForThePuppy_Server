@@ -31,4 +31,13 @@ public class ChatDao {
 
         return roomIdx;
     }
+
+    public int createChatMessage(int roomIdx, PostChatMessage postChatMessage){
+        String createChatMessageQuery = "insert into ChatMessage (message, image, receiverIdx, senderIdx, roomIdx) values (?, ?, ?, ?, ?);";
+        Object[] createChatMessageParams = new Object[]{postChatMessage.getMessage(), postChatMessage.getImage(), postChatMessage.getReceiverIdx(), postChatMessage.getSenderIdx(), roomIdx};
+        this.jdbcTemplate.update(createChatMessageQuery, createChatMessageParams);
+
+        String lastInsertIdQuery = "select last_insert_id()";
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
+    }
 }
