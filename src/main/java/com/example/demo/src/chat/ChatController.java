@@ -2,7 +2,6 @@ package com.example.demo.src.chat;
 
 import com.example.demo.src.chat.ChatProvider;
 import com.example.demo.src.chat.ChatService;
-import com.example.demo.src.post.model.PostPostReq;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.example.demo.config.BaseException;
@@ -78,6 +77,28 @@ public class ChatController {
 
             int messageIdx = chatService.createChatMessage(roomIdx, postChatMessage);
             return new BaseResponse<>(messageIdx);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 채팅방 조회 API
+     * [GET] /chats/:userIdx
+     * @return BaseResponse<List<GetChatRoom>>
+     */
+    @ResponseBody
+    @GetMapping("/{userIdx}")
+    public BaseResponse<List<GetChatRoom>> getChatRoom(@PathVariable("userIdx") int userIdx) {
+        try{
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            List<GetChatRoom> getChatRoom = chatProvider.getChatRoom(userIdx);
+            return new BaseResponse<>(getChatRoom);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }

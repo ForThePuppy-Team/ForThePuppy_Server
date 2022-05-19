@@ -28,4 +28,14 @@ public class ChatProvider {
         this.chatDao = chatDao;
         this.jwtService = jwtService;
     }
+
+    public List<GetChatRoom> getChatRoom(int userIdx) throws BaseException{
+        try{
+            List<GetChatRoom> getChatRoom = chatDao.getChatRoom(userIdx);
+            return getChatRoom;
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }
