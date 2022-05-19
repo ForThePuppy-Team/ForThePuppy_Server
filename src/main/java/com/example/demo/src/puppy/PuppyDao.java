@@ -1,6 +1,5 @@
 package com.example.demo.src.puppy;
 
-import com.example.demo.src.post.model.GetPostAll;
 import com.example.demo.src.puppy.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -52,5 +51,13 @@ public class PuppyDao {
         Object[] deletePuppyParams = new Object[]{puppyIdx, userIdx};
 
         return this.jdbcTemplate.update(deletePuppy,deletePuppyParams);
+    }
+
+    public int modifyPuppy(int userIdx, PatchPuppyReq patchPuppyReq){
+        String modifyPuppyQuery = "update Puppy set puppyName = ?, puppyPhoto = ?, puppyGender = ?, breed = ?, birth = ?, neutering = ?, Vaccination = ?, `character` = ? where puppyIdx = ? and userIdx = ?;\n ";
+        Object[] modifyPuppyParams = new Object[]{patchPuppyReq.getPuppyName(), patchPuppyReq.getPuppyPhoto(), patchPuppyReq.getPuppyGender(), patchPuppyReq.getBreed(), patchPuppyReq.getBirth(), patchPuppyReq.getNeutering(), patchPuppyReq.getVaccination(),
+                patchPuppyReq.getCharacter(), patchPuppyReq.getPuppyIdx(), userIdx};
+
+        return this.jdbcTemplate.update(modifyPuppyQuery,modifyPuppyParams);
     }
 }

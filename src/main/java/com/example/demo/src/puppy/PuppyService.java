@@ -1,7 +1,6 @@
 package com.example.demo.src.puppy;
 
 import com.example.demo.config.BaseException;
-import com.example.demo.src.post.model.PostPostReq;
 import com.example.demo.src.puppy.model.*;
 import com.example.demo.utils.JwtService;
 import com.example.demo.utils.SHA256;
@@ -42,6 +41,18 @@ public class PuppyService {
     public void deletePuppy(int puppyIdx, int userIdx) throws BaseException {
         try{
             int result = puppyDao.deletePuppy(puppyIdx, userIdx);
+            if(result == 0){
+                throw new BaseException(MODIFY_FAIL_USERNAME);
+            }
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    //PATCH
+    public void modifyPuppy(int userIdx, PatchPuppyReq patchPuppyReq) throws BaseException {
+        try{
+            int result = puppyDao.modifyPuppy(userIdx, patchPuppyReq);
             if(result == 0){
                 throw new BaseException(MODIFY_FAIL_USERNAME);
             }

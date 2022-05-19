@@ -1,6 +1,7 @@
 package com.example.demo.src.puppy;
 
 import com.example.demo.src.post.model.GetPost;
+import com.example.demo.src.post.model.PatchPostReq;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.example.demo.config.BaseException;
@@ -95,6 +96,29 @@ public class PuppyController {
             }
 
             puppyService.deletePuppy(puppyIdx, userIdx);
+            String result = "";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 반려견 수정 API
+     * [PATCH] /puppies/:userIdx
+     * @return BaseResponse<String>
+     */
+    @ResponseBody
+    @PatchMapping("/{userIdx}")
+    public BaseResponse<String> modifyPuppy(@PathVariable("userIdx") int userIdx, @RequestBody PatchPuppyReq patchPuppyReq){
+        try {
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            puppyService.modifyPuppy(userIdx, patchPuppyReq);
             String result = "";
             return new BaseResponse<>(result);
         } catch (BaseException exception) {
