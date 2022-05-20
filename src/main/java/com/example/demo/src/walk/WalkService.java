@@ -28,4 +28,14 @@ public class WalkService {
         this.walkProvider = walkProvider;
         this.jwtService = jwtService;
     }
+
+    //POST
+    public int createWalk(PostWalk postWalk) throws BaseException {
+        try{
+            int walkIdx = walkDao.createWalk(postWalk);
+            return walkIdx;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }
