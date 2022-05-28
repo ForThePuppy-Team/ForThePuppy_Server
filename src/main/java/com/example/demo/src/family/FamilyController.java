@@ -57,4 +57,27 @@ public class FamilyController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    /**
+     * 가족 등록 API
+     * [POST] /families/:idx/:userIdx
+     * @return BaseResponse<Integer>
+     */
+    // Body
+    @ResponseBody
+    @PostMapping("/{idx}/{userIdx}")
+    public BaseResponse<Integer> createFamilyMember(@PathVariable("idx") int familyIdx, @PathVariable("userIdx") int userIdx) {
+        try{
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            int memberIdx = familyService.createFamilyMember(familyIdx, userIdx);
+            return new BaseResponse<>(memberIdx);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }

@@ -39,4 +39,14 @@ public class FamilyService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    //POST
+    public int createFamilyMember(int familyIdx, int userIdx) throws BaseException {
+        try{
+            int memberIdx = familyDao.createFamilyMember(familyIdx, userIdx);
+            return memberIdx;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

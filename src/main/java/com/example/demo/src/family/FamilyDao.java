@@ -26,4 +26,13 @@ public class FamilyDao {
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
     }
 
+    public int createFamilyMember(int familyIdx, int userIdx){
+        String createFamilyMemberQuery = "insert into FamilyMember (familyIdx, userIdx) values (?, ?)";
+        Object[] createFamilyMemberParams = new Object[]{familyIdx, userIdx};
+        this.jdbcTemplate.update(createFamilyMemberQuery, createFamilyMemberParams);
+
+        String lastInsertIdQuery = "select last_insert_id()";
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
+    }
+
 }
