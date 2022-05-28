@@ -80,4 +80,27 @@ public class FamilyController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    /**
+     * 가족 계정 삭제 API
+     * [PATCH] /families/:idx/:userIdx/account-status
+     * @return BaseResponse<String>
+     */
+    @ResponseBody
+    @PatchMapping("/{idx}/{userIdx}/account-status")
+    public BaseResponse<String> deleteFamilyAccount(@PathVariable("idx") int familyIdx, @PathVariable("userIdx") int userIdx){
+        try {
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            familyService.deleteFamilyAccount(familyIdx, userIdx);
+            String result = "";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }

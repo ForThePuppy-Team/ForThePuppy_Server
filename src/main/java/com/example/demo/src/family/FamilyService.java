@@ -49,4 +49,16 @@ public class FamilyService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    //PATCH
+    public void deleteFamilyAccount(int familyIdx, int userIdx) throws BaseException {
+        try{
+            int result = familyDao.deleteFamilyAccount(familyIdx, userIdx);
+            if(result == 0){
+                throw new BaseException(MODIFY_FAIL_USERNAME);
+            }
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

@@ -41,4 +41,14 @@ public class FamilyDao {
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
     }
 
+    public int deleteFamilyAccount(int familyIdx, int userIdx){
+        String deleteFamilyAccount = "update Family set status = 0 where familyIdx = ? and userIdx = ?";
+        Object[] deleteFamilyAccountParams = new Object[]{familyIdx, userIdx};
+        this.jdbcTemplate.update(deleteFamilyAccount,deleteFamilyAccountParams);
+
+        String deleteFamilyMember = "update FamilyMember set status = 0 where familyIdx = ?;\n";
+        Object[] deleteFamilyMemberParams = new Object[]{familyIdx};
+        return this.jdbcTemplate.update(deleteFamilyMember,deleteFamilyMemberParams);
+    }
+
 }
