@@ -28,6 +28,15 @@ public class FamilyService {
         this.familyDao = familyDao;
         this.familyProvider = familyProvider;
         this.jwtService = jwtService;
+    }
 
+    //POST
+    public int createFamily(int userIdx) throws BaseException {
+        try{
+            int familyIdx = familyDao.createFamily(userIdx);
+            return familyIdx;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
     }
 }

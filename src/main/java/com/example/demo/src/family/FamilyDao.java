@@ -17,4 +17,13 @@ public class FamilyDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
+    public int createFamily(int userIdx){
+        String createFamilyQuery = "insert into Family (userIdx) values (?);";
+        Object[] createFamilyParams = new Object[]{userIdx};
+        this.jdbcTemplate.update(createFamilyQuery, createFamilyParams);
+
+        String lastInsertIdQuery = "select last_insert_id()";
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
+    }
+
 }
