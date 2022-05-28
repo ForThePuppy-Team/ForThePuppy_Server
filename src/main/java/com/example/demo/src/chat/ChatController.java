@@ -104,4 +104,26 @@ public class ChatController {
         }
     }
 
+    /**
+     * 채팅방 내역 조회 API
+     * [GET] /chats/:userIdx/:roomIdx
+     * @return BaseResponse<List<GetChatMessage>>
+     */
+    @ResponseBody
+    @GetMapping("/{userIdx}/{roomIdx}")
+    public BaseResponse<List<GetChatMessage>> getChatMessage(@PathVariable("userIdx") int userIdx, @PathVariable("roomIdx") int roomIdx) {
+        try{
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            List<GetChatMessage> getChatMessage = chatProvider.getChatMessage(userIdx, roomIdx);
+            return new BaseResponse<>(getChatMessage);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
 }
