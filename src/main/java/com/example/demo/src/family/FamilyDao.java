@@ -51,4 +51,10 @@ public class FamilyDao {
         return this.jdbcTemplate.update(deleteFamilyMember,deleteFamilyMemberParams);
     }
 
+    public int deleteFamilyMember(int familyIdx, int userIdx){
+        String deleteFamilyMember = "update FamilyMember set status = 0 where familyIdx = ? and userIdx = ?\n";
+        Object[] deleteFamilyMemberParams = new Object[]{familyIdx, userIdx};
+        return this.jdbcTemplate.update(deleteFamilyMember,deleteFamilyMemberParams);
+    }
+
 }

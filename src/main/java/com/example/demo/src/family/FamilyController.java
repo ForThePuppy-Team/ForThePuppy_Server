@@ -103,4 +103,27 @@ public class FamilyController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    /**
+     * 가족 삭제 API
+     * [PATCH] /families/:idx/:userIdx/member-status
+     * @return BaseResponse<String>
+     */
+    @ResponseBody
+    @PatchMapping("/{idx}/{userIdx}/member-status")
+    public BaseResponse<String> deleteFamilyMember(@PathVariable("idx") int familyIdx, @PathVariable("userIdx") int userIdx){
+        try {
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            familyService.deleteFamilyMember(familyIdx, userIdx);
+            String result = "";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }
