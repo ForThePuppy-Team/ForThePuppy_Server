@@ -94,6 +94,7 @@ public class ChatDao {
                 (rs, rowNum) -> new GetChatMessage(
                         rs.getInt("roomIdx"),
                         rs.getInt("userIdx"),
+                        rs.getString("profile"),
                         rs.getString("name"),
                         rs.getString("startDate"),
                         this.jdbcTemplate.query(getContentQuery, (rs1, rowNum1) -> new chatContent(

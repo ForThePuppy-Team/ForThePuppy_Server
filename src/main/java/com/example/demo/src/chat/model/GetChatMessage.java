@@ -14,5 +14,6 @@ public class GetChatMessage {
     private int userIdx;
     private String profile;
     private String name;
+    private String startDate;
     List<chatContent> chatContents;
 }
