@@ -109,7 +109,7 @@ public class PuppyController {
      * @return BaseResponse<String>
      */
     @ResponseBody
-    @PatchMapping("/{userIdx}")
+    @PostMapping("/{userIdx}")
     public BaseResponse<String> modifyPuppy(@PathVariable("userIdx") int userIdx, @RequestBody PatchPuppyReq patchPuppyReq){
         try {
             int userIdxByJwt = jwtService.getUserIdx();

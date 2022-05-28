@@ -133,7 +133,7 @@ public class PostController {
      * @return BaseResponse<String>
      */
     @ResponseBody
-    @PatchMapping("/{idx}/{userIdx}")
+    @PostMapping("/{idx}/{userIdx}")
     public BaseResponse<String> modifyPost(@PathVariable("idx") int postIdx, @PathVariable("userIdx") int userIdx, @RequestBody PatchPostReq patchPostReq){
         try {
             int userIdxByJwt = jwtService.getUserIdx();
