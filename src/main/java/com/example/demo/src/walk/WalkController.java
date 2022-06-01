@@ -1,6 +1,5 @@
 package com.example.demo.src.walk;
 
-import com.example.demo.src.puppy.model.PostPuppyReq;
 import com.example.demo.src.walk.model.PostWalk;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
