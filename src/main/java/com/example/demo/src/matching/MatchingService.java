@@ -38,4 +38,16 @@ public class MatchingService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    //PATCH
+    public void deleteMatching(int matchIdx, int userIdx) throws BaseException {
+        try{
+            int result = matchingDao.deleteMatching(matchIdx, userIdx);
+            if(result == 0){
+                throw new BaseException(MODIFY_FAIL_USERNAME);
+            }
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

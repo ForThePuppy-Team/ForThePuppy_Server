@@ -70,4 +70,11 @@ public class MatchingDao {
                         rs.getString("location")
                 ), getMatchingListParams);
     }
+
+    public int deleteMatching(int matchIdx, int userIdx){
+        String deleteMatching = "update Matching set status = 0 where matchIdx = ? and userIdx = ?;";
+        Object[] deleteMatchingParams = new Object[]{matchIdx, userIdx};
+
+        return this.jdbcTemplate.update(deleteMatching,deleteMatchingParams);
+    }
 }

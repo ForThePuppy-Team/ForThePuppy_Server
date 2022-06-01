@@ -81,4 +81,27 @@ public class MatchingController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    /**
+     * 대리산책 삭제 API
+     * [PATCH] /matchings/:idx/:userIdx/status
+     * @return BaseResponse<String>
+     */
+    @ResponseBody
+    @PatchMapping("/{idx}/{userIdx}/status")
+    public BaseResponse<String> deletePost(@PathVariable("idx") int matchIdx, @PathVariable("userIdx") int userIdx){
+        try {
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            matchingService.deleteMatching(matchIdx, userIdx);
+            String result = "";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }
