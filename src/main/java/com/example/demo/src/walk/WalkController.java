@@ -1,5 +1,6 @@
 package com.example.demo.src.walk;
 
+import com.example.demo.src.walk.model.GetWalk;
 import com.example.demo.src.walk.model.PostWalk;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,6 +52,29 @@ public class WalkController {
 
             int walkIdx = walkService.createWalk(postWalk);
             return new BaseResponse<>(walkIdx);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 산책 정보 조회 API
+     * [GET] /walks/:userIdx
+     * @return BaseResponse<List<GetWalk>>
+     */
+    @ResponseBody
+    @GetMapping("/{userIdx}")
+    public BaseResponse<List<GetWalk>> getWalk(@PathVariable("userIdx") int userIdx) {
+        try{
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            // Get Walk
+            List<GetWalk> getWalk = walkProvider.getWalk(userIdx);
+            return new BaseResponse<>(getWalk);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }

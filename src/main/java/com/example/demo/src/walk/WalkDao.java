@@ -25,4 +25,37 @@ public class WalkDao {
         String lastInserIdQuery = "select last_insert_id()";
         return this.jdbcTemplate.queryForObject(lastInserIdQuery,int.class);
     }
+
+    public List<GetWalk> getWalk(int userIdx){
+        String getWalkQuery = "select p.puppyIdx puppyIdx,\n" +
+                "       p.puppyName puppyName,\n" +
+                "       p.puppyGender puppyGender,\n" +
+                "       p.puppyPhoto puppyPhoto,\n" +
+                "       p.breed breed,\n" +
+                "       w.walkIdx walkIdx,\n" +
+                "       w.date date,\n" +
+                "       w.startTime startTime,\n" +
+                "       w.endTime endTime,\n" +
+                "       w.totalDistance totalDistance,\n" +
+                "       w.totalTime totalTime\n" +
+                "from Puppy p, Walk w\n" +
+                "where w.userIdx = ?\n" +
+                "and p.puppyIdx = w.puppyIdx\n" +
+                "and w.status = 1";
+        int getWaldParams = userIdx;
+        return this.jdbcTemplate.query(getWalkQuery,
+                (rs, rowNum) -> new GetWalk(
+                        rs.getInt("puppyIdx"),
+                        rs.getString("puppyName"),
+                        rs.getString("puppyGender"),
+                        rs.getString("puppyPhoto"),
+                        rs.getString("breed"),
+                        rs.getInt("walkIdx"),
+                        rs.getDate("date"),
+                        rs.getTime("startTime"),
+                        rs.getTime("endTime"),
+                        rs.getDouble("totalDistance"),
+                        rs.getLong("totalTime")
+                ), getWaldParams);
+    }
 }
