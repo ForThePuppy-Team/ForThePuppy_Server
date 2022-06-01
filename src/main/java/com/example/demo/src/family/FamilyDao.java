@@ -32,9 +32,15 @@ public class FamilyDao {
         return familyIdx;
     }
 
-    public int createFamilyMember(int familyIdx, int userIdx){
+    public int createFamilyMember(PostFamilyAdd postFamilyAdd){
+
+        String familyPassword = getFamilyPassword(postFamilyAdd.getFamilyIdx());
+        if(!familyPassword.equals(postFamilyAdd.getFamilyPassword())){
+            return 0;
+        }
+
         String createFamilyMemberQuery = "insert into FamilyMember (familyIdx, userIdx) values (?, ?)";
-        Object[] createFamilyMemberParams = new Object[]{familyIdx, userIdx};
+        Object[] createFamilyMemberParams = new Object[]{postFamilyAdd.getFamilyIdx(), postFamilyAdd.getUserIdx()};
         this.jdbcTemplate.update(createFamilyMemberQuery, createFamilyMemberParams);
 
         String lastInsertIdQuery = "select last_insert_id()";
@@ -55,6 +61,14 @@ public class FamilyDao {
         String deleteFamilyMember = "update FamilyMember set status = 0 where familyIdx = ? and userIdx = ?\n";
         Object[] deleteFamilyMemberParams = new Object[]{familyIdx, userIdx};
         return this.jdbcTemplate.update(deleteFamilyMember,deleteFamilyMemberParams);
+    }
+
+    public String getFamilyPassword(int familyIdx){
+        String getUserQuery = "select familyPassword from Family where familyIdx = ?";
+        return this.jdbcTemplate.queryForObject(getUserQuery,
+                (rs, rowNum) -> new String(
+                        rs.getString("familyPassword")),
+                familyIdx);
     }
 
 }

@@ -61,21 +61,25 @@ public class FamilyController {
 
     /**
      * 가족 등록 API
-     * [POST] /families/:idx/:userIdx
+     * [POST] /families/add
      * @return BaseResponse<Integer>
      */
     // Body
     @ResponseBody
-    @PostMapping("/{idx}/{userIdx}")
-    public BaseResponse<Integer> createFamilyMember(@PathVariable("idx") int familyIdx, @PathVariable("userIdx") int userIdx) {
+    @PostMapping("/add")
+    public BaseResponse<Integer> createFamilyMember(@RequestBody PostFamilyAdd postFamilyAdd) {
         try{
+            int userIdx = postFamilyAdd.getUserIdx();
             int userIdxByJwt = jwtService.getUserIdx();
 
             if(userIdx != userIdxByJwt){
                 return new BaseResponse<>(INVALID_USER_JWT);
             }
 
-            int memberIdx = familyService.createFamilyMember(familyIdx, userIdx);
+            int memberIdx = familyService.createFamilyMember(postFamilyAdd);
+            if(memberIdx == 0){
+                return new BaseResponse<>(FAILED_TO_FAMILY_ADD);
+            }
             return new BaseResponse<>(memberIdx);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
