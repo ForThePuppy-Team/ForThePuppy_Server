@@ -131,4 +131,27 @@ public class FamilyController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    /**
+     * 가족 조회 API
+     * [GET] /families/:userOdx
+     * @return BaseResponse<List<GetFamily>>
+     */
+    @ResponseBody
+    @GetMapping("/{userIdx}")
+    public BaseResponse<List<GetFamily>> getFamily(@PathVariable("userIdx") int userIdx) {
+        try{
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            // Get Family
+            List<GetFamily> getFamily = familyProvider.getFamily(userIdx);
+            return new BaseResponse<>(getFamily);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }

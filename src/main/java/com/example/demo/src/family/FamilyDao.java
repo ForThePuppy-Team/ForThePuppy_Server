@@ -71,4 +71,44 @@ public class FamilyDao {
                 familyIdx);
     }
 
+    public List<GetFamily> getFamily(int userIdx){
+        String getFamilyQuery = "select f.familyIdx familyIdx,\n" +
+                "       DATE_FORMAT((f.createAt), '%Y년 %m월 %d일') as createDate,\n" +
+                "       f.userIdx userIdx\n" +
+                "from Family f, FamilyMember fm, User u\n" +
+                "where f.familyIdx = fm.familyIdx\n" +
+                "and f.userIdx = u.userIdx\n" +
+                "and f.status = 1\n" +
+                "and fm.status = 1\n" +
+                "and u.status = 1\n" +
+                "and fm.userIdx = ?;";
+        String getFamilyMemebrQuery = "select u.userIdx userIdx,\n" +
+                "       DATE_FORMAT((fm.createAt), '%Y년 %m월 %d일') as createDate,\n" +
+                "       u.profile profile,\n" +
+                "       u.name name,\n" +
+                "       u.id id,\n" +
+                "       u.region region\n" +
+                "from FamilyMember fm, User u, Family f\n" +
+                "where f.familyIdx = fm.familyIdx\n" +
+                "and f.status = 1\n" +
+                "and fm.status = 1\n" +
+                "and u.status = 1\n" +
+                "and fm.userIdx = ?;\n";
+        int getFamilyParams = userIdx;
+        return this.jdbcTemplate.query(getFamilyQuery,
+                (rs, rowNum) -> new GetFamily(
+                        rs.getInt("familyIdx"),
+                        rs.getString("createDate"),
+                        rs.getInt("userIdx"),
+                        this.jdbcTemplate.query(getFamilyMemebrQuery, (rs1, rowNum1) -> new familyMember(
+                                rs1.getInt("userIdx"),
+                                rs1.getString("createDate"),
+                                rs1.getString("profile"),
+                                rs1.getString("name"),
+                                rs1.getString("id"),
+                                rs1.getString("region")
+                                ), getFamilyParams)
+                ), getFamilyParams);
+    }
+
 }

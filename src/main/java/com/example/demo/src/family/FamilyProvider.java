@@ -29,4 +29,14 @@ public class FamilyProvider {
         this.familyDao = familyDao;
         this.jwtService = jwtService;
     }
+
+    public List<GetFamily> getFamily(int userIdx) throws BaseException{
+        try{
+            List<GetFamily> getFamily = familyDao.getFamily(userIdx);
+            return getFamily;
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }
