@@ -28,4 +28,14 @@ public class MatchingProvider {
         this.matchingDao = matchingDao;
         this.jwtService = jwtService;
     }
+
+    public List<GetMatchingList> getMatchingList(int userIdx) throws BaseException{
+        try{
+            List<GetMatchingList> getMatchingList = matchingDao.getMatchingList(userIdx);
+            return getMatchingList;
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

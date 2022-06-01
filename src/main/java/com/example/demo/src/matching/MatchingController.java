@@ -2,6 +2,7 @@ package com.example.demo.src.matching;
 
 import com.example.demo.src.matching.MatchingProvider;
 import com.example.demo.src.matching.MatchingService;
+import com.example.demo.src.post.model.GetPost;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.example.demo.config.BaseException;
@@ -53,6 +54,29 @@ public class MatchingController {
 
             int matchIdx = matchingService.createMatching(postMatching);
             return new BaseResponse<>(matchIdx);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 대리산책 조회 API
+     * [GET] /matchings/:userIdx
+     * @return BaseResponse<List<GetMatchingList>>
+     */
+    @ResponseBody
+    @GetMapping("/{userIdx}")
+    public BaseResponse<List<GetMatchingList>> getMatchingList(@PathVariable("userIdx") int userIdx) {
+        try{
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            // Get Posts
+            List<GetMatchingList> getMatchingList = matchingProvider.getMatchingList(userIdx);
+            return new BaseResponse<>(getMatchingList);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }
