@@ -31,9 +31,9 @@ public class FamilyService {
     }
 
     //POST
-    public int createFamily(int userIdx) throws BaseException {
+    public int createFamily(PostFamily postFamily) throws BaseException {
         try{
-            int familyIdx = familyDao.createFamily(userIdx);
+            int familyIdx = familyDao.createFamily(postFamily);
             return familyIdx;
         } catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);

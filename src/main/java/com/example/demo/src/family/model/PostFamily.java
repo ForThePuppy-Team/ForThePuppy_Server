@@ -9,4 +9,5 @@ import lombok.Setter;
 @AllArgsConstructor
 public class PostFamily {
     private int userIdx;
+    private String familyPassword;
 }

@@ -17,16 +17,16 @@ public class FamilyDao {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public int createFamily(int userIdx){
-        String createFamilyQuery = "insert into Family (userIdx) values (?);";
-        Object[] createFamilyParams = new Object[]{userIdx};
+    public int createFamily(PostFamily postFamily){
+        String createFamilyQuery = "insert into Family (userIdx, familyPassword) values (?, ?);\n";
+        Object[] createFamilyParams = new Object[]{postFamily.getUserIdx(), postFamily.getFamilyPassword()};
         this.jdbcTemplate.update(createFamilyQuery, createFamilyParams);
 
         String lastInsertIdQuery = "select last_insert_id()";
         int familyIdx = this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
 
         String createFamilyMemberQuery = "insert into FamilyMember (familyIdx, userIdx, representative) values (?, ?, ?)";
-        Object[] createFamilyMemberParams = new Object[]{familyIdx, userIdx, 1};
+        Object[] createFamilyMemberParams = new Object[]{familyIdx, postFamily.getUserIdx(), 1};
         this.jdbcTemplate.update(createFamilyMemberQuery, createFamilyMemberParams);
 
         return familyIdx;
