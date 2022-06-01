@@ -16,4 +16,13 @@ public class MatchingDao {
     public void setDataSource(DataSource dataSource){
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
+
+    public int createMatching(PostMatching postMatching){
+        String createMatchQuery = "insert into Matching (userIdx, careIdx, puppyIdx, startDate, endDate, startTime, endTime, location) values (?, ?, ?, ?, ?, ?, ?, ?);";
+        Object[] createMatchParams = new Object[]{postMatching.getUserIdx(), postMatching.getCareIdx(), postMatching.getPuppyIdx(), postMatching.getStartDate(), postMatching.getEndDate(), postMatching.getStartTime(), postMatching.getEndTime(), postMatching.getLocation()};
+        this.jdbcTemplate.update(createMatchQuery, createMatchParams);
+
+        String lastInsertIdQuery = "select last_insert_id()";
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
+    }
 }

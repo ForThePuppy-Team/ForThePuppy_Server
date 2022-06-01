@@ -28,4 +28,14 @@ public class MatchingService {
         this.matchingProvider = matchingProvider;
         this.jwtService = jwtService;
     }
+
+    //POST
+    public int createMatching(PostMatching postMatching) throws BaseException {
+        try{
+            int matchIdx = matchingDao.createMatching(postMatching);
+            return matchIdx;
+        } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

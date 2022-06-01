@@ -17,7 +17,7 @@ import static com.example.demo.config.BaseResponseStatus.*;
 import static com.example.demo.utils.ValidationRegex.isRegexEmail;
 
 @RestController
-@RequestMapping("/matching")
+@RequestMapping("/matchings")
 public class MatchingController {
     final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -32,5 +32,29 @@ public class MatchingController {
         this.matchingProvider = matchingProvider;
         this.matchingService = matchingService;
         this.jwtService = jwtService;
+    }
+
+    /**
+     * 대리산책 등록 API
+     * [POST] /matching
+     * @return BaseResponse<Integer>
+     */
+    // Body
+    @ResponseBody
+    @PostMapping("")
+    public BaseResponse<Integer> createMatching(@RequestBody PostMatching postMatching) {
+        try{
+            int userIdx = postMatching.getUserIdx();
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            int matchIdx = matchingService.createMatching(postMatching);
+            return new BaseResponse<>(matchIdx);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
     }
 }
