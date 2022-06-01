@@ -11,9 +11,9 @@ import java.sql.Time;
 @Setter
 @AllArgsConstructor
 public class PostWalk {
-    private Date date;
-    private Time startTime;
-    private Time endTime;
+    private String date;
+    private String startTime;
+    private String endTime;
     private double totalDistance;
     private long totalTime;
     private int userIdx;
