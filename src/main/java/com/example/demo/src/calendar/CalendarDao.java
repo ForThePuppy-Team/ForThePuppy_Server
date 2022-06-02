@@ -61,4 +61,34 @@ public class CalendarDao {
                 ), userIdx);
     }
 
+    public List<GetDay> getDay(int scheduleIdx, int userIdx){
+        String getDayQuery = "select c.scheduleIdx scheduleIdx,\n" +
+                "       c.userIdx userIdx,\n" +
+                "       c.scheduleContent scheduleContent,\n" +
+                "       c.detail detail,\n" +
+                "       c.startDate startDate,\n" +
+                "       c.endDate endDate,\n" +
+                "       c.startTime startTime,\n" +
+                "       c.endTime endTime,\n" +
+                "       sc.categoryName categoryName,\n" +
+                "       c.alert alert\n" +
+                "from Calendar c, scheduleCategory sc\n" +
+                "where c.scheduleCategoryIdx = sc.categoryIdx\n" +
+                "and scheduleIdx = ?\n" +
+                "and userIdx = ?\n" +
+                "and c.status = 1";
+        return this.jdbcTemplate.query(getDayQuery,
+                (rs, rowNum) -> new GetDay(
+                        rs.getInt("scheduleIdx"),
+                        rs.getInt("userIdx"),
+                        rs.getString("scheduleContent"),
+                        rs.getString("detail"),
+                        rs.getString("startDate"),
+                        rs.getString("endDate"),
+                        rs.getString("startTime"),
+                        rs.getString("endTime"),
+                        rs.getString("categoryName"),
+                        rs.getInt("alert")
+                ), scheduleIdx, userIdx);
+    }
 }

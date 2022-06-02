@@ -32,12 +32,22 @@ public class CalendarProvider {
     }
 
     public List<GetMonth> getMonth(int userIdx) throws BaseException{
-     //   try{
+        try{
             List<GetMonth> getMonth = calendarDao.getMonth(userIdx);
             return getMonth;
-     //   }
-     //   catch (Exception exception) {
-     //       throw new BaseException(DATABASE_ERROR);
-     //   }
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public List<GetDay> getDay(int scheduleIdx, int userIdx) throws BaseException{
+        try{
+            List<GetDay> getDay = calendarDao.getDay(scheduleIdx, userIdx);
+            return getDay;
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
     }
 }

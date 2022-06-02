@@ -82,4 +82,26 @@ public class CalendarController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    /**
+     * 특정 날짜 일정 조회 API
+     * [GET] /calendar/:idx/:userIdx
+     * @return BaseResponse<List<GetMonth>>
+     */
+    @ResponseBody
+    @GetMapping("/{idx}/{userIdx}")
+    public BaseResponse<List<GetDay>> getDay(@PathVariable("idx") int scheduleIdx, @PathVariable("userIdx") int userIdx) {
+        try{
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            List<GetDay> getDay = calendarProvider.getDay(scheduleIdx, userIdx);
+            return new BaseResponse<>(getDay);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }
