@@ -91,4 +91,11 @@ public class CalendarDao {
                         rs.getInt("alert")
                 ), scheduleIdx, userIdx);
     }
+
+    public int deleteSchedule(int scheduleIdx, int userIdx){
+        String deleteScheduleQuery = "update Calendar set status = 0 where scheduleIdx = ? and userIdx = ?;";
+        Object[] deleteScheduleParams = new Object[]{scheduleIdx, userIdx};
+
+        return this.jdbcTemplate.update(deleteScheduleQuery,deleteScheduleParams);
+    }
 }

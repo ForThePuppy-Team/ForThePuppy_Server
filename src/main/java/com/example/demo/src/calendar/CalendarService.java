@@ -38,4 +38,16 @@ public class CalendarService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    //PATCH
+    public void deleteSchedule(int scheduleIdx, int userIdx) throws BaseException {
+        try{
+            int result = calendarDao.deleteSchedule(scheduleIdx, userIdx);
+            if(result == 0){
+                throw new BaseException(MODIFY_FAIL_USERNAME);
+            }
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

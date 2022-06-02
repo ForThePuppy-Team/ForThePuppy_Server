@@ -104,4 +104,27 @@ public class CalendarController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    /**
+     * 일정 삭제 API
+     * [PATCH] /calendars/:idx/:userIdx/status
+     * @return BaseResponse<String>
+     */
+    @ResponseBody
+    @PatchMapping("/{idx}/{userIdx}/status")
+    public BaseResponse<String> deleteSchedule(@PathVariable("idx") int scheduleIdx, @PathVariable("userIdx") int userIdx){
+        try {
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            calendarService.deleteSchedule(scheduleIdx, userIdx);
+            String result = "";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }
