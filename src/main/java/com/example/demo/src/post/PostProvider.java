@@ -39,9 +39,9 @@ public class PostProvider {
         //     }
     }
 
-    public List<GetPostAll> getPostAll(String region) throws BaseException{
+    public List<GetPostAll> getPostAll() throws BaseException{
           try{
-        List<GetPostAll> getPostAllRes = postDao.getPostAll(region);
+        List<GetPostAll> getPostAllRes = postDao.getPostAll();
         return getPostAllRes;
               }
               catch (Exception exception) {
