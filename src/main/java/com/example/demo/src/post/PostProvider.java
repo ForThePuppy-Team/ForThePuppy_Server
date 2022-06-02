@@ -30,22 +30,22 @@ public class PostProvider {
     }
 
     public List<GetPost> getPosts(int postIdx) throws BaseException{
-        //  try{
-        List<GetPost> getPostsRes = postDao.getPost(postIdx);
-        return getPostsRes;
-        //      }
-        //      catch (Exception exception) {
-        //         throw new BaseException(DATABASE_ERROR);
-        //     }
+        try{
+            List<GetPost> getPostsRes = postDao.getPost(postIdx);
+            return getPostsRes;
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
     }
 
-    public List<GetPostAll> getPostAll() throws BaseException{
-          try{
-        List<GetPostAll> getPostAllRes = postDao.getPostAll();
-        return getPostAllRes;
-              }
-              catch (Exception exception) {
-                 throw new BaseException(DATABASE_ERROR);
-             }
+    public List<GetPostAll> getPostAll(String region) throws BaseException{
+        try{
+            List<GetPostAll> getPostAllRes = postDao.getPostAll(region);
+            return getPostAllRes;
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
     }
 }

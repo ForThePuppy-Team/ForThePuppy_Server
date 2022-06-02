@@ -104,7 +104,7 @@ public class PostDao {
         return this.jdbcTemplate.update(deletePost,deletePostParams);
     }
 
-    public List<GetPostAll> getPostAll(){
+    public List<GetPostAll> getPostAll(String region){
         String getPostAllQuery = "select u.userIdx userIdx,\n" +
                 "       p.postIdx postIdx,\n" +
                 "       u.profile profile,\n" +
@@ -129,7 +129,9 @@ public class PostDao {
                 "and p.category = pc.categoryIdx\n" +
                 "and u.status = 1\n" +
                 "and p.status = 1\n" +
-                "and pc.status = 1\n";
+                "and pc.status = 1\n" +
+                "and region = ?";
+        String getPostAllParams = region;
         return this.jdbcTemplate.query(getPostAllQuery,
                 (rs, rowNum) -> new GetPostAll(
                         rs.getInt("userIdx"),
@@ -143,7 +145,7 @@ public class PostDao {
                         rs.getString("CategoryName"),
                         rs.getInt("commentCount"),
                         rs.getString("date")
-                        ));
+                        ), getPostAllParams);
     }
 
     public int modifyPost(int postIdx, int userIdx, PatchPostReq patchPostReq){

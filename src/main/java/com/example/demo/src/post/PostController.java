@@ -106,12 +106,12 @@ public class PostController {
 
     /**
      * 전체 게시글 조회 API
-     * [GET] /posts/:userIdx
+     * [GET] /posts/:userIdx?regionName=
      * @return BaseResponse<List<GetPostAll>>
      */
     @ResponseBody
     @GetMapping("/{userIdx}")
-    public BaseResponse<List<GetPostAll>> getPostsAll(@PathVariable("userIdx") int userIdx) {
+    public BaseResponse<List<GetPostAll>> getPostsAll(@PathVariable("userIdx") int userIdx, @RequestParam("regionName") String region) {
         try{
             int userIdxByJwt = jwtService.getUserIdx();
 
@@ -120,7 +120,7 @@ public class PostController {
             }
 
             // Get Post All
-            List<GetPostAll> getPostAllRes = postProvider.getPostAll();
+            List<GetPostAll> getPostAllRes = postProvider.getPostAll(region);
             return new BaseResponse<>(getPostAllRes);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
