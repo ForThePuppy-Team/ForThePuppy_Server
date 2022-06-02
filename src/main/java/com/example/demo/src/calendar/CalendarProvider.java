@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import static com.example.demo.config.BaseResponseStatus.*;
@@ -27,5 +29,15 @@ public class CalendarProvider {
     public CalendarProvider(CalendarDao calendarDao, JwtService jwtService) {
         this.calendarDao = calendarDao;
         this.jwtService = jwtService;
+    }
+
+    public List<GetMonth> getMonth(int userIdx) throws BaseException{
+     //   try{
+            List<GetMonth> getMonth = calendarDao.getMonth(userIdx);
+            return getMonth;
+     //   }
+     //   catch (Exception exception) {
+     //       throw new BaseException(DATABASE_ERROR);
+     //   }
     }
 }

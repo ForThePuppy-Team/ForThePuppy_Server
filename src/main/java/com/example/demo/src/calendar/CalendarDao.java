@@ -6,6 +6,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Repository
@@ -36,6 +38,27 @@ public class CalendarDao {
 
         String lastInsertIdQuery = "select last_insert_id()";
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
+    }
+
+    public List<GetMonth> getMonth(int userIdx){
+        String getMonthQuery = "select c.scheduleIdx scheduleIdx,\n" +
+                "       c.scheduleContent scheduleContent,\n" +
+                "       c.startDate startDate,\n" +
+                "       c.endDate endDate,\n" +
+                "       c.scheduleColor scheduleColor\n" +
+                "from Calendar c, scheduleCategory sc\n" +
+                "where userIdx = ?\n" +
+                "and c.scheduleCategoryIdx = sc.categoryIdx\n" +
+                "and c.status = 1\n" +
+                "order by startDate;";
+        return this.jdbcTemplate.query(getMonthQuery,
+                (rs, rowNum) -> new GetMonth(
+                        rs.getInt("scheduleIdx"),
+                        rs.getString("scheduleContent"),
+                        rs.getString("startDate"),
+                        rs.getString("endDate"),
+                        rs.getString("scheduleColor")
+                ), userIdx);
     }
 
 }
