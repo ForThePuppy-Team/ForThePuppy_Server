@@ -50,4 +50,16 @@ public class MatchingService {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    //PATCH
+    public void acceptMatching(int matchIdx, int userIdx) throws BaseException {
+        try{
+            int result = matchingDao.acceptMatching(matchIdx, userIdx);
+            if(result == 0){
+                throw new BaseException(MODIFY_FAIL_USERNAME);
+            }
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }

@@ -124,4 +124,11 @@ public class MatchingDao {
                         rs.getInt("accept")
                 ), getMatchingWaitingParams);
     }
+
+    public int acceptMatching(int matchIdx, int userIdx){
+        String acceptMatching = "update Matching set accept = 1 where matchIdx = ? and userIdx = ?;\n";
+        Object[] acceptMatchingParams = new Object[]{matchIdx, userIdx};
+
+        return this.jdbcTemplate.update(acceptMatching,acceptMatchingParams);
+    }
 }

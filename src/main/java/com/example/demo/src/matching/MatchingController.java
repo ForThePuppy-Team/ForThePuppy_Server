@@ -89,7 +89,7 @@ public class MatchingController {
      */
     @ResponseBody
     @PatchMapping("/{idx}/{userIdx}/status")
-    public BaseResponse<String> deletePost(@PathVariable("idx") int matchIdx, @PathVariable("userIdx") int userIdx){
+    public BaseResponse<String> deleteMatching(@PathVariable("idx") int matchIdx, @PathVariable("userIdx") int userIdx){
         try {
             int userIdxByJwt = jwtService.getUserIdx();
 
@@ -124,6 +124,29 @@ public class MatchingController {
             List<GetMatchingWaiting> getMatchingWaiting = matchingProvider.getMatchingWaiting(userIdx);
             return new BaseResponse<>(getMatchingWaiting);
         } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    /**
+     * 대리산책 수락 API
+     * [PATCH] /matchings/:idx/:userIdx/accept
+     * @return BaseResponse<String>
+     */
+    @ResponseBody
+    @PatchMapping("/{idx}/{userIdx}/accept")
+    public BaseResponse<String> acceptMatching(@PathVariable("idx") int matchIdx, @PathVariable("userIdx") int userIdx){
+        try {
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            matchingService.acceptMatching(matchIdx, userIdx);
+            String result = "";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
