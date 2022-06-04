@@ -42,13 +42,15 @@ public class MatchingDao {
                 "       m.endDate endDate,\n" +
                 "       m.startTime startTime,\n" +
                 "       m.endTime endTime,\n" +
-                "       m.location location\n" +
+                "       m.location location,\n" +
+                "       m.accept accept\n" +
                 "from User u, Puppy p, Matching m\n" +
                 "where m.careIdx = u.userIdx\n" +
                 "and p.puppyIdx = m.puppyIdx\n" +
                 "and m.status = 1\n" +
                 "and p.status = 1\n" +
-                "and m.userIdx = ?;\n";
+                "and m.accept = 1\n" +
+                "and (m.userIdx = ? or m.careIdx = ?);";
         int getMatchingListParams = userIdx;
         return this.jdbcTemplate.query(getMatchingListQuery,
                 (rs, rowNum) -> new GetMatchingList(
@@ -67,8 +69,9 @@ public class MatchingDao {
                         rs.getDate("endDate"),
                         rs.getTime("startTime"),
                         rs.getTime("endTime"),
-                        rs.getString("location")
-                ), getMatchingListParams);
+                        rs.getString("location"),
+                        rs.getInt("accept")
+                ), getMatchingListParams, getMatchingListParams);
     }
 
     public int deleteMatching(int matchIdx, int userIdx){

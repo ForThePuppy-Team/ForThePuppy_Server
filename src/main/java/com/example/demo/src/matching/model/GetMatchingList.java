@@ -27,4 +27,5 @@ public class GetMatchingList {
     private Time startTime;
     private Time endTime;
     private String location;
+    private int accept;
 }
