@@ -104,4 +104,27 @@ public class MatchingController {
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
+    /**
+     * 대리산책 대기 조회 API
+     * [GET] /matchings/:userIdx/waiting
+     * @return BaseResponse<List<GetMatchingWaiting>>
+     */
+    @ResponseBody
+    @GetMapping("/{userIdx}/waiting")
+    public BaseResponse<List<GetMatchingWaiting>> getMatchingWaiting(@PathVariable("userIdx") int userIdx) {
+        try{
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            // Get Posts
+            List<GetMatchingWaiting> getMatchingWaiting = matchingProvider.getMatchingWaiting(userIdx);
+            return new BaseResponse<>(getMatchingWaiting);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 }

@@ -80,4 +80,48 @@ public class MatchingDao {
 
         return this.jdbcTemplate.update(deleteMatching,deleteMatchingParams);
     }
+
+    public List<GetMatchingWaiting> getMatchingWaiting(int userIdx){
+        String getMatchingWaitingQuery = "select u.userIdx userIdx,\n" +
+                "       u.profile profile,\n" +
+                "       u.name name,\n" +
+                "       u.id id,\n" +
+                "       u.region region,\n" +
+                "       p.puppyIdx puppyIdx,\n" +
+                "       p.puppyName puppyName,\n" +
+                "       p.puppyPhoto puppyPhoto,\n" +
+                "       m.matchIdx matchIdx,\n" +
+                "       m.startDate startDate,\n" +
+                "       m.endDate endDate,\n" +
+                "       m.startTime startTime,\n" +
+                "       m.endTime endTime,\n" +
+                "       m.location location,\n" +
+                "       m.accept accept\n" +
+                "from User u, Puppy p, Matching m\n" +
+                "where m.careIdx = u.userIdx\n" +
+                "and p.puppyIdx = m.puppyIdx\n" +
+                "and m.status = 1\n" +
+                "and p.status = 1\n" +
+                "and m.accept = 0\n" +
+                "and m.userIdx = ?;";
+        int getMatchingWaitingParams = userIdx;
+        return this.jdbcTemplate.query(getMatchingWaitingQuery,
+                (rs, rowNum) -> new GetMatchingWaiting(
+                        rs.getInt("userIdx"),
+                        rs.getString("profile"),
+                        rs.getString("name"),
+                        rs.getString("id"),
+                        rs.getString("region"),
+                        rs.getInt("puppyIdx"),
+                        rs.getString("puppyName"),
+                        rs.getString("puppyPhoto"),
+                        rs.getInt("matchIdx"),
+                        rs.getDate("startDate"),
+                        rs.getDate("endDate"),
+                        rs.getTime("startTime"),
+                        rs.getTime("endTime"),
+                        rs.getString("location"),
+                        rs.getInt("accept")
+                ), getMatchingWaitingParams);
+    }
 }

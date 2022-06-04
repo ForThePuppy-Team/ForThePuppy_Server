@@ -38,4 +38,14 @@ public class MatchingProvider {
             throw new BaseException(DATABASE_ERROR);
         }
     }
+
+    public List<GetMatchingWaiting> getMatchingWaiting(int userIdx) throws BaseException{
+        try{
+            List<GetMatchingWaiting> getMatchingWaiting = matchingDao.getMatchingWaiting(userIdx);
+            return getMatchingWaiting;
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
 }
