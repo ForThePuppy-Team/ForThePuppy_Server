@@ -73,4 +73,16 @@ public class PostService {
         }
     }
 
+    //PATCH
+    public void deleteComment(int commentIdx, int userIdx) throws BaseException {
+        try{
+            int result = postDao.deleteComment(commentIdx, userIdx);
+            if(result == 0){
+                throw new BaseException(MODIFY_FAIL_USERNAME);
+            }
+        } catch(Exception exception){
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
 }

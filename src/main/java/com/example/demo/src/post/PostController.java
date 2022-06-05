@@ -174,4 +174,27 @@ public class PostController {
         }
     }
 
+    /**
+     * 게시글 댓글 삭제 API
+     * [PATCH] /posts/:commentIdx/:userIdx/comment-status
+     * @return BaseResponse<String>
+     */
+    @ResponseBody
+    @PatchMapping("/{commentIdx}/{userIdx}/comment-status")
+    public BaseResponse<String> deleteComment(@PathVariable("commentIdx") int commentIdx, @PathVariable("userIdx") int userIdx){
+        try {
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            postService.deleteComment(commentIdx, userIdx);
+            String result = "";
+            return new BaseResponse<>(result);
+        } catch (BaseException exception) {
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
 }

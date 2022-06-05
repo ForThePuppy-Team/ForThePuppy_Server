@@ -165,4 +165,11 @@ public class PostDao {
         String lastInsertIdQuery = "select last_insert_id()";
         return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
     }
+
+    public int deleteComment(int commentIdx, int userIdx){
+        String deleteComment = "update PostComment set status = 0 where commentIdx = ? and userIdx = ?;\n";
+        Object[] deleteCommentParams = new Object[]{commentIdx, userIdx};
+
+        return this.jdbcTemplate.update(deleteComment,deleteCommentParams);
+    }
 }
