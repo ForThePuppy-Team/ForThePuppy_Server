@@ -154,4 +154,13 @@ public class PostDao {
 
         return this.jdbcTemplate.update(modifyPostQuery,modifyPostParams);
     }
+
+    public int createComment(PostComment postComment){
+        String createCommentQuery = "insert into PostComment (comment, postIdx, userIdx) values (?, ?, ?);\n";
+        Object[] createCommentParams = new Object[]{postComment.getComment(), postComment.getPostIdx(), postComment.getUserIdx()};
+        this.jdbcTemplate.update(createCommentQuery, createCommentParams);
+
+        String lastInsertIdQuery = "select last_insert_id()";
+        return this.jdbcTemplate.queryForObject(lastInsertIdQuery,int.class);
+    }
 }

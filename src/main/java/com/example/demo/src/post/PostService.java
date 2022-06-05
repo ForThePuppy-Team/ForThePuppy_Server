@@ -63,4 +63,14 @@ public class PostService {
         }
     }
 
+    //POST
+    public int createComment(PostComment postComment) throws BaseException {
+      //  try{
+            int commentIdx = postDao.createComment(postComment);
+            return commentIdx;
+      //  } catch (Exception exception) {
+      //      throw new BaseException(DATABASE_ERROR);
+      //  }
+    }
+
 }

@@ -150,4 +150,28 @@ public class PostController {
         }
     }
 
+    /**
+     * 댓글 등록 API
+     * [POST] /posts/comment
+     * @return BaseResponse<Integer>
+     */
+    // Body
+    @ResponseBody
+    @PostMapping("/comment")
+    public BaseResponse<Integer> createComment(@RequestBody PostComment postComment) {
+        try{
+            int userIdx = postComment.getUserIdx();
+            int userIdxByJwt = jwtService.getUserIdx();
+
+            if(userIdx != userIdxByJwt){
+                return new BaseResponse<>(INVALID_USER_JWT);
+            }
+
+            int commentIdx = postService.createComment(postComment);
+            return new BaseResponse<>(commentIdx);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
 }
