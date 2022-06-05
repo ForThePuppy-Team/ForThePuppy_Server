@@ -74,7 +74,8 @@ public class PostDao {
                 "  and u.status = 1\n" +
                 "  and p.status = 1\n" +
                 "  and pc.status = 1\n" +
-                "  and p.postIdx = ?";
+                "  and p.postIdx = ? " +
+                "order by pc.createAt desc ";
         int getPostParams = postIdx;
         return this.jdbcTemplate.query(getPostQuery,
                 (rs, rowNum) -> new GetPost(
@@ -125,12 +126,13 @@ public class PostDao {
                 "       select postIdx, commentIdx, count(commentIdx) as 'commentCount'\n" +
                 "       from PostComment\n" +
                 "    ) as x on p.postIdx = x.postIdx, PostCategory pc\n" +
-                "where u.userIdx = p.postIdx\n" +
+                "where u.userIdx = p.userIdx\n" +
                 "and p.category = pc.categoryIdx\n" +
                 "and u.status = 1\n" +
                 "and p.status = 1\n" +
                 "and pc.status = 1\n" +
-                "and region = ?";
+                "and u.region = ? \n" +
+                "order by p.createAt desc ;";
         String getPostAllParams = region;
         return this.jdbcTemplate.query(getPostAllQuery,
                 (rs, rowNum) -> new GetPostAll(
